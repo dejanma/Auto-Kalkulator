@@ -11,14 +11,14 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       padding: 10px;
-      color: #333;
+      color: #f2f2f2; /* Svetli tekst */
     }
     .container {
       max-width: 900px;
       margin: 0 auto;
-      background: white;
+      background: #29302B; /* TAMNA POZADINA */
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
       overflow: hidden;
     }
     .header {
@@ -32,7 +32,7 @@
     .content { padding: 20px; }
     .section { margin-bottom: 25px; }
     .section-title {
-      font-size: 17px; font-weight: bold; color: #333;
+      font-size: 17px; font-weight: bold; color: #f2f2f2;
       margin-bottom: 15px; padding-bottom: 10px;
       border-bottom: 2px solid #667eea;
     }
@@ -44,22 +44,22 @@
     }
     .input-wrapper { display: flex; flex-direction: column; }
     label {
-      font-size: 14px; font-weight: 600; color: #555;
+      font-size: 14px; font-weight: 600; color: #f2f2f2;
       margin-bottom: 8px; line-height: 1.4;
     }
     .input-with-unit { display: flex; gap: 8px; }
     input[type="number"], select {
-      padding: 14px; border: 2px solid #ddd; border-radius: 8px;
-      font-size: 16px; transition: border-color 0.3s;
+      padding: 14px; border: 2px solid #444; background: #1e1e1e; color: #f2f2f2;
+      border-radius: 8px; font-size: 16px; transition: border-color 0.3s;
     }
     input[type="number"]:focus, select:focus {
       outline: none; border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
     }
     input[type="number"] { flex: 1; }
     .unit {
-      padding: 14px 16px; background: #f5f5f5; border: 2px solid #ddd;
-      border-radius: 8px; font-size: 15px; color: #777; min-width: 70px;
+      padding: 14px 16px; background: #333; border: 2px solid #444;
+      border-radius: 8px; font-size: 15px; color: #aaa; min-width: 70px;
       text-align: center; font-weight: 600;
     }
     .button-group {
@@ -74,25 +74,28 @@
       color: white;
     }
     .btn-calculate:active { transform: scale(0.98); }
-    .btn-reset { background: #f0f0f0; color: #333; }
-    .btn-reset:active { background: #e0e0e0; }
+    .btn-reset { background: #444; color: #f2f2f2; }
+    .btn-reset:active { background: #555; }
     .results {
       display: none; margin-top: 30px; padding: 20px;
-      background: #f9f9f9; border-radius: 8px; border-left: 4px solid #667eea;
+      background: #1e1e1e; border-radius: 8px; border-left: 4px solid #667eea;
     }
     .results.show { display: block; }
-    .results h3 { color: #333; margin-bottom: 20px; font-size: 19px; }
+    .results h3 { color: #f2f2f2; margin-bottom: 20px; font-size: 19px; }
     .result-item {
       display: flex; flex-direction: column; gap: 8px;
-      margin-bottom: 18px; padding: 16px; background: white; border-radius: 8px;
+      margin-bottom: 18px; padding: 16px; background: #222; border-radius: 8px;
     }
-    .result-label { font-size: 14px; color: #777; font-weight: 600; }
+    .result-label { font-size: 14px; color: #aaa; font-weight: 600; }
     .result-value { font-size: 24px; font-weight: bold; color: #667eea; }
     .error {
-      display: none; padding: 15px; background: #fee; border: 2px solid #fcc;
-      border-radius: 8px; color: #c33; margin-bottom: 20px; font-size: 14px;
+      display: none; padding: 15px; background: #400; border: 2px solid #600;
+      border-radius: 8px; color: #fcc; margin-bottom: 20px; font-size: 14px;
     }
     .error.show { display: block; }
+
+    /* SAKRIVENI POMOCNI PODACI */
+    #helper-section { display: none !important; }
 
     /* RESPONSIVE */
     @media (max-width: 480px) {
@@ -113,8 +116,6 @@
       .form-group { grid-template-columns: 1fr 1fr; gap: 20px; }
       .button-group { flex-direction: row; }
       .result-item { flex-direction: row; justify-content: space-between; align-items: center; }
-      .result-label { font-size: 13px; }
-      .result-value { font-size: 20px; }
     }
   </style>
 </head>
@@ -312,9 +313,9 @@
           </div>
         </div>
 
-        <!-- Pomoćni Podaci -->
-        <div class="section">
-          <div class="section-title">Pomoćni Podaci</div>
+        <!-- SAKRIVENI POMOCNI PODACI (NE VIDLJIVI, ALI RADI) -->
+        <div class="section" id="helper-section">
+          <div class="section-title">Pomoćni Podaci (sakriveno)</div>
           <div class="form-group">
             <div class="input-wrapper">
               <label for="h2">Kurs EUR</label>
@@ -396,7 +397,7 @@
   </div>
 
   <script>
-    // === CEO BACKEND IZ CODE.GS JE OVDE ===
+    // === CEO BACKEND ===
     function validateInputs(inputs) {
       const required = ['b3', 'b7', 'b8', 'b9', 'b10', 'h2'];
       for (let field of required) {
@@ -456,7 +457,7 @@
       return { b23, b24, b25, b26 };
     }
 
-    // === GLAVNA FUNKCIJA ===
+    // === GLAVNA FUNKCIJA SA AUTO-SCROLL ===
     function calculate() {
       try {
         const inputs = {
@@ -494,7 +495,11 @@
         document.getElementById('b24').textContent = Math.round(results.b24);
         document.getElementById('b25').textContent = Math.round(results.b25);
         document.getElementById('b26').textContent = Math.round(results.b26);
-        document.getElementById('results').classList.add('show');
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.classList.add('show');
+
+        // AUTO-SCROLL NA REZULTATE
+        resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       } catch (error) {
         const errorDiv = document.getElementById('error-message');
